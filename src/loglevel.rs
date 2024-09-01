@@ -1,3 +1,5 @@
+use std::fmt::{Display, Formatter};
+
 #[derive(Debug, PartialEq, Eq)]
 pub enum LogLevel {
     All,
@@ -8,15 +10,15 @@ pub enum LogLevel {
     Off,
 }
 
-impl LogLevel {
-    pub fn to_string(&self) -> String {
+impl Display for LogLevel {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
-            LogLevel::All => "ALL".to_string(),
-            LogLevel::Debug => "DEBUG".to_string(),
-            LogLevel::Info => "INFO".to_string(),
-            LogLevel::Warning => "WARNING".to_string(),
-            LogLevel::Severe => "SEVERE".to_string(),
-            LogLevel::Off => "OFF".to_string(),
+            LogLevel::All => f.write_str("ALL"),
+            LogLevel::Debug => f.write_str("DEBUG"),
+            LogLevel::Info => f.write_str("INFO"),
+            LogLevel::Warning => f.write_str("WARNING"),
+            LogLevel::Severe => f.write_str("SEVERE"),
+            LogLevel::Off => f.write_str("OFF"),
         }
     }
 }
