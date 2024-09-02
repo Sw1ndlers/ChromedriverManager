@@ -45,7 +45,7 @@ pub async fn write_file(
         file.write_all(&chunk)?;
 
         let increment = chunk.len() as u64; // Convert to MB
-        progress_bar.inc(increment as u64);
+        progress_bar.inc(increment);
     }
 
     file.flush()?;

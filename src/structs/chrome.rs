@@ -21,16 +21,12 @@ impl DriverDownload {
 
     pub fn to_zip_path(&self) -> PathBuf {
         let relative = PathBuf::from(self.get_file_name()).with_extension("zip");
-        let absolute = get_cache_dir().join(relative);
-
-        absolute
+        get_cache_dir().join(relative)
     }
 
     pub fn to_folder_path(&self) -> PathBuf {
         let relative = PathBuf::from(self.get_file_name());
-        let absolute = get_cache_dir().join(relative);
-
-        absolute
+        get_cache_dir().join(relative)
     }
 }
 
@@ -41,15 +37,11 @@ impl ChromeDownload {
 
     pub fn to_zip_path(&self) -> PathBuf {
         let relative = PathBuf::from(self.get_file_name()).with_extension("zip");
-        let absolute = get_cache_dir().join(relative);
-
-        absolute
+        get_cache_dir().join(relative)
     }
 
     pub fn to_folder_path(&self) -> PathBuf {
         let relative = PathBuf::from(self.get_file_name());
-        let absolute = get_cache_dir().join(relative);
-
-        absolute
+        get_cache_dir().join(relative)
     }
 }

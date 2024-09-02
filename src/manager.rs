@@ -22,7 +22,7 @@ use std::{
     process::{self, Command},
 };
 
-use anyhow::Ok;
+use anyhow::{Context, Ok};
 use thirtyfour::{ChromeCapabilities, ChromiumLikeCapabilities};
 
 const CHROME_DOWNLOADS_URL: &str =
@@ -33,12 +33,18 @@ pub struct Handler {
     platform: String,
 }
 
-impl Handler {
-    pub fn new() -> Self {
+impl Default for Handler {
+    fn default() -> Self {
         Self {
             client: reqwest::Client::new(),
             platform: get_platform(),
         }
+    }
+}
+
+impl Handler {
+    pub fn new() -> Self {
+        Self::default()
     }
 
     fn get_default_paths(&self) -> (PathBuf, PathBuf) {
@@ -55,7 +61,7 @@ impl Handler {
             return true;
         }
 
-        return false;
+        false
     }
 
     async fn get_packages(&self) -> anyhow::Result<Vec<ChromePackage>> {
@@ -80,9 +86,7 @@ impl Handler {
         &self,
         packages: &Vec<ChromePackage>,
     ) -> anyhow::Result<ChromePackage> {
-        let latest_package = get_latest_chrome_package(&packages).unwrap();
-
-        Ok(latest_package)
+        get_latest_chrome_package(packages).context("Could not get the latest version of chrome")
     }
 
     async fn download_files(&self) -> anyhow::Result<(PathBuf, PathBuf)> {
@@ -90,11 +94,11 @@ impl Handler {
         let selected_package = self.get_selected_package(&chrome_packages).await?;
 
         // TODO: Make platform configurable
-        let chrome_download: &ChromeDownload = &selected_package
+        let chrome_download: &ChromeDownload = selected_package
             .get_chrome_download(&self.platform)
             .expect("Chrome download not found");
 
-        let chromedriver_download: &DriverDownload = &selected_package
+        let chromedriver_download: &DriverDownload = selected_package
             .get_chromedriver_download(&self.platform)
             .expect("Chromedriver download not found");
 
@@ -107,7 +111,7 @@ impl Handler {
         );
 
         download_chrome(&self.client, chrome_download).await?;
-        print!("\n");
+        println!();
         download_chromedriver(&self.client, chromedriver_download).await?;
 
         let chrome_path = chrome_download.to_folder_path();
@@ -116,7 +120,7 @@ impl Handler {
         println!("Chrome path: {:?}", chrome_path);
         println!("Chromedriver path: {:?}", driver_path);
 
-        return Ok((chrome_path, driver_path));
+        Ok((chrome_path, driver_path))
     }
 
     // Return chrome.exe and chromedriver.exe if on windows, otherwise return chrome and chromedriver
@@ -167,7 +171,7 @@ impl Handler {
         let mut command = Command::new(chromedriver_exe);
         let mut command = command
             .arg(format!("--port={}", port))
-            .arg(format!("--log-level={}", loglevel.to_string()));
+            .arg(format!("--log-level={loglevel}"));
 
         if loglevel == LogLevel::Off {
             // command = command.creation_flags(0x08000000);
