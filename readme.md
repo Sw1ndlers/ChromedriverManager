@@ -1,14 +1,15 @@
 # Chromedriver Manager
 
+Automatically download Chromedriver for thirtyfour instances
+
 ## Crates.io
 https://crates.io/crates/chromedriver-manager
 
-## Example
-```rs
+## Code Example
+```rust
 use thirtyfour::prelude::*;
 
 // Require the Handler
-
 use chromedriver_manager::{manager::Handler, loglevel::LogLevel};
 
 #[tokio::main]
