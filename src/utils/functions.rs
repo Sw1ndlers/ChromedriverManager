@@ -54,12 +54,22 @@ pub async fn write_file(
 }
 
 pub fn get_platform() -> String {
-    let platform = match consts::OS {
+    let mut platform = match consts::OS {
         "windows" => "win64",
         "linux" => "linux64",
-        "macos" => "mac-x64",
+        "macos" => "macos",
         _ => panic!("Unsupported OS"),
     };
+    if platform.to_string() == "macos"{
+        #[cfg(target_arch = "x86_64")]
+        {
+            platform = "mac-x64";
+        }
 
+        #[cfg(target_arch = "aarch64")]
+        {
+            platform = "mac-arm64";
+        }
+    }
     platform.to_string()
 }
