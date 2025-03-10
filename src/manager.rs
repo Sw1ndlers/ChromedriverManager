@@ -207,7 +207,7 @@ mod tests {
     #[tokio::test]
     async fn test_launch_chromedriver() -> anyhow::Result<()> {
         let mut caps = DesiredCapabilities::chrome();
-        //caps.set_headless()?;
+        caps.set_headless()?;
 
         // Launch chromedriver on port 3000
         let mut chromedriver = Handler::new()
