@@ -223,7 +223,9 @@ mod tests {
 
         thread::sleep(Duration::from_secs(10));
 
+        driver.quit().await?;
         chromedriver.kill()?;
+        
         Ok(())
     }
 }
