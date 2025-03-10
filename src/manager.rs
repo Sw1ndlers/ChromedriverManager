@@ -131,6 +131,9 @@ impl Handler {
         if cfg!(target_os = "windows") {
             chrome_exe = "chrome.exe".to_string();
             chromedriver_exe = "chromedriver.exe".to_string();
+        } else if cfg!(target_os = "macos") {
+            chrome_exe = "Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing".to_string();
+            chromedriver_exe = "chromedriver".to_string();
         } else {
             chrome_exe = "chrome".to_string();
             chromedriver_exe = "chromedriver".to_string();
@@ -204,7 +207,7 @@ mod tests {
     #[tokio::test]
     async fn test_launch_chromedriver() -> anyhow::Result<()> {
         let mut caps = DesiredCapabilities::chrome();
-        caps.set_headless()?;
+        //caps.set_headless()?;
 
         // Launch chromedriver on port 3000
         let mut chromedriver = Handler::new()
