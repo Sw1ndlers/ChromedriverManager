@@ -208,6 +208,8 @@ mod tests {
     async fn test_launch_chromedriver() -> anyhow::Result<()> {
         let mut caps = DesiredCapabilities::chrome();
         caps.set_headless()?;
+        caps.set_no_sandbox()?;
+        caps.set_disable_gpu()?;
 
         // Launch chromedriver on port 3000
         let mut chromedriver = Handler::new()
