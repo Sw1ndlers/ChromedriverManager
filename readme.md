@@ -27,7 +27,10 @@ async fn main() -> anyhow::Result<()> {
     // Connect to chrome on the same port
     let driver = WebDriver::new("http://localhost:9515", caps).await?; 
 
+    std::thread::sleep(std::time::Duration::from_secs(10));
+
     // Close the proccess after tasks are finished
+    driver.quit().await?;
     chromedriver.kill()?;
 
     Ok(())

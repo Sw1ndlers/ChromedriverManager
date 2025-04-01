@@ -207,6 +207,7 @@ mod tests {
     #[tokio::test]
     async fn test_launch_chromedriver() -> anyhow::Result<()> {
         let mut caps = DesiredCapabilities::chrome();
+        
         caps.set_headless()?;
         caps.set_no_sandbox()?;
         caps.set_disable_gpu()?;
